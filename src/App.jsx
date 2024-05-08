@@ -3,18 +3,30 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  const [nombre, setNombre] = useState('');
-  const [imagen, setImagen] = useState('');
-
+  const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    const URL = 'https://randomuser.me/api/'
+
+    const URL = 'https://randomuser.me/api/?results=10'
+
     const peticion = fetch(URL);
+
     peticion
-      .then(datos => datos.json())
-      .then(lectura => {
-        setNombre(`${lectura.results[0].name.first} ${lectura.results[0].name.last}`)
-        setImagen(lectura.results[0].picture.medium)
+      .then( datos => datos.json() )
+
+      .then( lectura => {
+        lectura.results.map( (persona) => {
+          setDatos( (e) =>
+            [...e,  /*se agrega el spread operatorm [...e] ('e' es el valor de setDatos que seria datos) para que copie el array que esta vacio y añada el resto de la info*/
+            <div key={persona.email} className='card'>
+              <div>
+                <h4>{persona.name.first} {persona.name.last}</h4>
+              </div>
+              <div>
+                <img src={persona.picture.large} />
+              </div>
+            </div>])
+        })
       })
       .catch(() => console.log('Se ha producido un error'))
   }, [])
@@ -25,9 +37,8 @@ function App() {
   return (
     <>
       <h1>Empleado del mes</h1>
-      {nombre}
-      <div>
-        <img src={imagen} />
+      <div className='caja'>
+        {datos}
       </div>
     </>
   )

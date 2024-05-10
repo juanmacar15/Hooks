@@ -26,3 +26,17 @@ img{
     width: 100%;
     border-radius: 10px;
 }
+
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button{
+    cursor: pointer;
+
+}
+
+h1{
+    text-align: center;
+}
